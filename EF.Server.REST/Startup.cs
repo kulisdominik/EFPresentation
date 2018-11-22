@@ -37,7 +37,9 @@ namespace EF.Server.REST
 
 			services.AddScoped<IDbInitializer, DbInitializer>();
 
-			services.AddDbContext<SchoolContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SchoolDatabase")));
+			services.AddDbContext<ApplicationContext>(
+				options => options.UseSqlServer(Configuration.GetConnectionString("SchoolDatabase"))
+				);
 
 			services.AddScoped<IStudentRepository, StudentRepository>();
 		}

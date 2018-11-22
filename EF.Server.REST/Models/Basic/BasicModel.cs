@@ -14,6 +14,16 @@ namespace EF.Server.REST.Models.Basic
 		/// </summary>
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public Guid Id { get; set; }
+		public Guid Id { get; private set; } 
+
+		public BasicModel()
+		{
+			Id = Guid.NewGuid();
+		}
+
+		public BasicModel(Guid id)
+		{
+			Id = id;
+		}
 	}
 }

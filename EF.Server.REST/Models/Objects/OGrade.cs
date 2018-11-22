@@ -1,11 +1,13 @@
-﻿using EF.Server.REST.Models.Basic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using EF.Server.REST.Models.Basic;
 
-namespace EF.Server.REST.Models
+namespace EF.Server.REST.Models.Objects
 {
 	/// <summary>
 	/// Grading scale
 	/// </summary>
-	public class GradeModel : BasicModel
+	[Table("OGrade")]
+	public class OGrade : BasicModel
 	{
 		/// <summary>
 		/// Full name of the rating

@@ -1,4 +1,5 @@
-﻿using EF.Server.REST.Models;
+﻿using System;
+using EF.Server.REST.Models.Objects;
 using EF.Server.REST.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -19,9 +20,9 @@ namespace EF.Server.REST.Contexts
 
 		// GET api/students
 		[HttpGet]
-	    public ActionResult<IEnumerable<StudentModel>> Get()
+	    public ActionResult<IEnumerable<OStudent>> Get()
 	    {
-		    IEnumerable<StudentModel> students = _studentRepository.Get();
+		    IEnumerable<OStudent> students = _studentRepository.Get();
 
 		    if (students == null)
 		    {
@@ -29,15 +30,15 @@ namespace EF.Server.REST.Contexts
 			}
 
 			return students.Count() > 0 ? 
-				(ActionResult<IEnumerable<StudentModel>>)Ok(students) : 
-				(ActionResult<IEnumerable<StudentModel>>)NotFound();
+				(ActionResult<IEnumerable<OStudent>>)Ok(students) : 
+				(ActionResult<IEnumerable<OStudent>>)NotFound();
 		}
 
 		// GET api/students/5
 		[HttpGet("{studentId}")]
-	    public ActionResult<string> Get(int studentId)
+	    public ActionResult<string> Get(Guid studentId)
 	    {
-		    StudentModel student = _studentRepository.Get(studentId);
+		    OStudent student = _studentRepository.Get(studentId);
 
 		    if (student == null)
 		    {
@@ -49,21 +50,21 @@ namespace EF.Server.REST.Contexts
 
 		// POST api/students
 		[HttpPost]
-	    public void Post([FromBody] StudentModel student)
+	    public void Post([FromBody] OStudent student)
 	    {
 		    _studentRepository.Insert(student);
 		}
 
 	    // PUT api/values/5
 	    [HttpPut("{id}")]
-	    public void Put([FromBody] StudentModel student)
+	    public void Put([FromBody] OStudent student)
 	    {
 		    _studentRepository.Update(student);
 		}
 
 	    // DELETE api/values/5
 	    [HttpDelete("{id}")]
-	    public void Delete(int studentId)
+	    public void Delete(Guid studentId)
 	    {
 		    _studentRepository.Delete(studentId);
 		}

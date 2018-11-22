@@ -2,74 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 using EF.Server.REST.Contexts;
-using EF.Server.REST.Models;
+using EF.Server.REST.Models.Objects;
+using EF.Server.REST.Repositories.Basic;
 using EF.Server.REST.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace EF.Server.REST.Repositories
 {
-	public class StudentRepository : IStudentRepository
+	public class StudentRepository : BasicRepository<ApplicationContext>, IStudentRepository
 	{
-		private SchoolContext _context;
-		private bool disposed = false;
-
-		public StudentRepository(SchoolContext context)
+		public StudentRepository(ApplicationContext context)
 		{
-			_context = context;
+			Context = context;
 		}
 
-		public void Delete(int studentID)
+		public IEnumerable<OStudent> Get()
 		{
-			StudentModel student = _context.Students.Find(studentID);
-			_context.Students.Remove(student);
+			return Context.Students.ToList();
 		}
 
-		public IEnumerable<StudentModel> Get()
+		public OStudent Get(Guid studentId)
 		{
-			return _context.Students.ToList();
+			return Context.Students.Find(studentId);
 		}
 
-		public StudentModel Get(int studentId)
+		public void Insert(OStudent student, bool save)
 		{
-			return _context.Students.Find(studentId);
+			Context.Students.Add(student);
+			TrySave(save);
 		}
 
-		public void Insert(StudentModel student)
+		public void Update(OStudent student, bool save)
 		{
-			_context.Students.Add(student);
+			Context.Update(student);
+			TrySave(save);
 		}
 
-		public void SaveChangesAsync()
+		public void Delete(Guid studentID, bool save)
 		{
-			_context.SaveChangesAsync();
+			OStudent student = Context.Students.Find(studentID);
+			Context.Students.Remove(student);
+			TrySave();
 		}
 
-		public void SaveChanges()
+		public void TrySomethingMoreDifficult()
 		{
-			_context.SaveChanges();
-		}
-
-		public void Update(StudentModel student)
-		{
-			_context.Entry(student).State = EntityState.Modified;
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!this.disposed)
-			{
-				if (disposing)
-				{
-					_context.Dispose();
-				}
-			}
-			this.disposed = true;
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			//Context.Students.Where(item => item.Name == "Dominik Kulis").FirstOrDefault();
+			//Context.Students.Where(item => item.Name == "Dominik Kulis").All();
 		}
 	}
 }

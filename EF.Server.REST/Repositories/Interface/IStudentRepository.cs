@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using EF.Server.REST.Models;
+using EF.Server.REST.Models.Objects;
+using EF.Server.REST.Repositories.Interface.Basic;
 
 namespace EF.Server.REST.Repositories.Interface
 {
-	public interface IStudentRepository : IDisposable
+	public interface IStudentRepository
 	{
-		IEnumerable<StudentModel> Get();
+		IEnumerable<OStudent> Get();
 
-		StudentModel Get(int studentId);
+		OStudent Get(Guid studentId);
 
-		void Insert(StudentModel student);
+		void Insert(OStudent student, bool save = true);
 
-		void Delete(int studentID);
+		void Delete(Guid studentID, bool save = true);
 
-		void Update(StudentModel student);
-
-		void SaveChangesAsync();
-
-		void SaveChanges();
-
+		void Update(OStudent student, bool save = true);
 	}
 }
